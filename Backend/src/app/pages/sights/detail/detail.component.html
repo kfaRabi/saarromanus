@@ -1,0 +1,184 @@
+<div class="row">
+    <div class="col-md-12">  
+      <nb-card>
+        <nb-card-header>Sights</nb-card-header>
+        <nb-card-body>
+          <form [formGroup]="sightForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="sight_category" class="label">Sight Category</label>
+                        <nb-select placeholder="Select a category" required fullWidth formControlName="sight_category" [ngClass]="{ 'is-invalid': submitted && f.sight_category.errors }">
+                          <nb-option value="{{option.id}}" *ngFor="let option of sight_categories">{{option.de.name}}</nb-option>
+                        </nb-select>
+
+                        <div *ngIf="submitted && f.sight_category.errors">
+                          <div class="error-message" *ngIf="f.sight_category.errors.required">This field is required!</div>
+                      </div>
+
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputFirstName" class="label">Name (Deutsche)</label>
+                        <input type="text" nbInput fullWidth  placeholder="Sight Name" formControlName="name_de" [ngClass]="{ 'is-invalid': submitted && f.name_de.errors }">
+                        <div *ngIf="submitted && f.name_de.errors">
+                          <div class="error-message" *ngIf="f.name_de.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Information (Deutsche)</label>
+                        <textarea rows="5" nbInput fullWidth   placeholder="Details for the sight" formControlName="information_de" [ngClass]="{ 'is-invalid': submitted && f.information_de.errors }"></textarea>
+                        <div *ngIf="submitted && f.information_de.errors">
+                          <div class="error-message" *ngIf="f.information_de.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Name (English)</label>
+                        <input type="text" nbInput fullWidth placeholder="Sight Name" formControlName="name_en" [ngClass]="{ 'is-invalid': submitted && f.name_en.errors }">
+                        <div *ngIf="submitted && f.name_en.errors">
+                          <div class="error-message" *ngIf="f.name_en.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Information (English)</label>
+                        <textarea rows="5" nbInput fullWidth   placeholder="Details for the sight" formControlName="information_en" [ngClass]="{ 'is-invalid': submitted && f.information_en.errors }"></textarea>
+                        <div *ngIf="submitted && f.information_en.errors">
+                          <div class="error-message" *ngIf="f.information_en.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputEmail" class="label">Name (Francais)</label>
+                        <input type="text" nbInput fullWidth placeholder="Sight Name" formControlName="name_fr" [ngClass]="{ 'is-invalid': submitted && f.name_fr.errors }">
+                        <div *ngIf="submitted && f.name_fr.errors">
+                          <div class="error-message" *ngIf="f.name_fr.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Information (Francais)</label>
+                        <textarea rows="5" nbInput fullWidth   placeholder="Details for the sight" formControlName="information_fr" [ngClass]="{ 'is-invalid': submitted && f.name_de.errors }"></textarea>
+                        <div *ngIf="submitted && f.information_fr.errors">
+                          <div class="error-message" *ngIf="f.information_fr.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <br>
+                <h6>Sight Map</h6>
+                <br>
+
+                <nb-alert _ngcontent-mtk-c9="" status="info" _nghost-mtk-c11="" ng-reflect-status="info" class="status-info">
+                  <strong _ngcontent-mtk-c9="">Instructions!</strong> 
+
+                  1. Please enable location permissions for this page if you want to plan sight near your current location.<br>
+                  2. Else, please enter the address of the nearest place you would like to plan a sight.<br>
+                  3. Tap on the desired location to add a marking point.<br>
+                  4. Drag the marker to make the location more precise.<br>
+                
+                </nb-alert>
+
+                <div class="form-group">
+                  <input type="text" nbInput fullWidth  placeholder="Search Address" 
+                  (keydown.enter)="$event.preventDefault()" 
+                  autocapitalize="off" autocomplete="off" spellcheck="off" #search>
+                </div>
+                <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
+                  <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+                    (dragEnd)="markerDragEnd($event)"></agm-marker>
+                </agm-map>
+              </div>
+            </div>
+
+            <br>
+
+            <div class = "row">
+              <div class="col-md-12">
+                <h6>Images</h6>
+                <div class="uploadfilecontainer" (click)="imageInput.click()">
+                  <input hidden type="file" #imageInput accept="images/*" (change)="uploadFile($event.target.files, 'images')">
+                </div>
+                <div formArrayName="images_details" *ngFor="let file of imagesArray;let i= index">
+                  <div class="files-list">
+                    <img src="{{file.src || file.downloadURL}}" class="preview-image">
+                      <button class="delete-file" (click)="deleteAttachment(i, 'images')">
+                        <img src="../../../../assets/images/Recycle_Bin_Full.png">
+                      </button>
+                    </div>
+                    <div class="row" [formGroupName]="i">
+                      <div class="col-md-4 col col-sm-12">
+                        <label for="inputEmail" class="label">Picture Title (Deutsche)</label>
+                        <input type="text" nbInput fullWidth formControlName="title_de">
+                        <label for="inputEmail" class="label">Description (Deutsche)</label>
+                        <textarea nbInput fullWidth formControlName="description_de"></textarea>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail" class="label">Picture Title (English)</label>
+                        <input type="text" nbInput fullWidth  formControlName="title_en">
+                        <label for="inputEmail" class="label">Description (English)</label>
+                        <textarea nbInput fullWidth formControlName="description_en"></textarea>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="inputEmail" class="label">Picture Title (Francais)</label>
+                        <input type="text" nbInput fullWidth  formControlName="title_fr">
+                        <label for="inputEmail" class="label">Description (Francais)</label>
+                        <textarea nbInput fullWidth formControlName="description_fr"></textarea>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <h6>Audio Files</h6>
+                <div class="uploadfilecontainer" (click)="audioInput.click()">
+                  <input hidden type="file" #audioInput (change)="uploadFile($event.target.files, 'audio')">
+                </div>
+                <div  class="files-list" *ngFor="let file of audioArray;let i= index">
+                    <p class="file-name">{{ file.name || file.path.split('/')[1] }}</p>
+                    <button class="delete-file" (click)="deleteAttachment(i, 'audio')">
+                      <img src="../../../../assets/images/Recycle_Bin_Full.png">
+                    </button>
+                </div>
+              </div>
+            </div>
+
+            <nb-alert _ngcontent-hup-c9="" status="danger" _nghost-hup-c11="" ng-reflect-status="danger" class="status-danger" *ngIf="submitted && (f.name_de.errors || f.information_de.errors || f.name_en.errors || f.information_en.errors || f.name_fr.errors|| f.information_fr.errors|| f.sight_category.errors)">
+            
+              <strong _ngcontent-hup-c9="">Oh snap!</strong> Required fields are missing. Please scroll above to see more Information. 
+          
+            </nb-alert>
+
+            <div class="row">
+              <div class="col-md-12">
+                <button fullWidth type="submit" nbButton>Submit</button>
+              </div>
+            </div>
+            
+          </form>
+        </nb-card-body>
+      </nb-card> 
+    </div>
+  </div>
