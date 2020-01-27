@@ -1,0 +1,165 @@
+<div class="row">
+    <div class="col-md-12">  
+      <nb-card>
+        <nb-card-header>Historic Route</nb-card-header>
+        <nb-card-body>
+          <form [formGroup]="historicRouteForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputFirstName" class="label">Name (Deutsche)</label>
+                        <input type="text" nbInput fullWidth  placeholder="Route Name" formControlName="name_de" [ngClass]="{ 'is-invalid': submitted && f.name_de.errors }">
+                        <div *ngIf="submitted && f.name_de.errors">
+                          <div class="error-message" *ngIf="f.name_de.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Information (Deutsche)</label>
+                        <textarea rows="5" nbInput fullWidth shape="round"  placeholder="Details for the route" formControlName="information_de" [ngClass]="{ 'is-invalid': submitted && f.information_de.errors }"></textarea>
+                        <div *ngIf="submitted && f.information_de.errors">
+                          <div class="error-message" *ngIf="f.information_de.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Name (English)</label>
+                        <input type="text" nbInput fullWidth placeholder="Route Name" formControlName="name_en" [ngClass]="{ 'is-invalid': submitted && f.name_en.errors }">
+                        <div *ngIf="submitted && f.name_en.errors">
+                          <div class="error-message" *ngIf="f.name_en.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Information (English)</label>
+                        <textarea rows="5" nbInput fullWidth shape="round"  placeholder="Details for the route" formControlName="information_en" [ngClass]="{ 'is-invalid': submitted && f.information_en.errors }"></textarea>
+                        <div *ngIf="submitted && f.information_en.errors">
+                          <div class="error-message" *ngIf="f.information_en.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputEmail" class="label">Name (Francais)</label>
+                        <input type="text" nbInput fullWidth placeholder="Route Name" formControlName="name_fr" [ngClass]="{ 'is-invalid': submitted && f.name_fr.errors }">
+                        <div *ngIf="submitted && f.name_fr.errors">
+                          <div class="error-message" *ngIf="f.name_fr.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label for="inputLastName" class="label">Information (Francais)</label>
+                        <textarea rows="5" nbInput fullWidth shape="round"  placeholder="Details for the route" formControlName="information_fr" [ngClass]="{ 'is-invalid': submitted && f.information_fr.errors }"></textarea>
+                        <div *ngIf="submitted && f.information_fr.errors">
+                          <div class="error-message" *ngIf="f.information_fr.errors.required">This field is required!</div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="col-md-6">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="sight_category" class="label">Add Sights</label>
+                    <nb-select placeholder="Select a Sight" required fullWidth >
+                      <nb-option value="{{option.id}}" (click)="addSight(option)" *ngFor="let option of historic_sites">{{option.de.name}}</nb-option>
+                    </nb-select>
+                  </div>
+                  
+                  <div  class="files-list" *ngFor="let sight of sightArray;let i= index">
+                    <p class="file-name">{{ sight.de.name  }}</p>
+                    <button class="delete-file" (click)="deleteSight(i)">
+                      <img src="../../../../assets/images/Recycle_Bin_Full.png">
+                    </button>
+                </div>
+                </div>
+
+                <div class="col-sm-12">
+                  <div class="form-group">
+                    <label for="inputEmail" class="label">Google Map Link</label>
+                    <input type="text" nbInput fullWidth placeholder="Google Map Link" formControlName="google_map_link" [ngClass]="{ 'is-invalid': submitted && f.google_map_link.errors }">
+                    <div *ngIf="submitted && f.google_map_link.errors">
+                      <div class="error-message" *ngIf="f.google_map_link.errors.required">This field is required!</div>
+                  </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <h6>Route Map</h6>
+                <br>
+
+                <nb-alert _ngcontent-mtk-c9="" status="info" _nghost-mtk-c11="" ng-reflect-status="info" class="status-info">
+                  <strong _ngcontent-mtk-c9="">Instructions!</strong> 
+
+                  1. Please enable location permissions for this page if you want to plan route near your current location.<br>
+                  2. Else, please enter the address of the nearest place you would like to plan a route.<br>
+                  3. Tap on the desired location to add a marking point.<br>
+                  4. To remove a point, tap on it again.<br>
+                  5. Continue tapping to add marking points to make a route. (Mark atleast two points)<br>
+                  6. Complete route will show up on map.<br>
+              
+                </nb-alert>
+
+                <br>
+                <div class="form-group">
+                  <input type="text" nbInput fullWidth  placeholder="Search Address" 
+                  (keydown.enter)="$event.preventDefault()" 
+                  autocapitalize="off" autocomplete="off" spellcheck="off" #search>
+                </div>
+                <agm-map [latitude]="latitude" 
+                  [longitude]="longitude" [zoom]="zoom" (mapClick)="onMapClick($event)"
+                >
+                  <agm-marker               
+                    *ngFor="let m of routePath; let i = index"
+                    (markerClick)="onMarkerClick(i)"
+                    [latitude]="m._lat"
+                    [longitude]="m._long"
+                    [label]="m.label"
+                    [markerDraggable]="m.draggable"
+                  ></agm-marker>
+                  <agm-polyline>
+                    <agm-polyline-point *ngFor="let m of routePath" [latitude]="m._lat" [longitude]="m._long">
+                    </agm-polyline-point>
+                  </agm-polyline>
+                 <agm-marker               
+                    *ngFor="let m of sightArray; let i = index"
+                    [latitude]="m.geolocation._lat"
+                    [longitude]="m.geolocation._long"
+                    [title]="m.de.name"
+                    [iconUrl]="sightMarker()"
+                 ></agm-marker>
+                </agm-map>
+              </div>
+            </div>
+            
+            <nb-alert _ngcontent-hup-c9="" status="danger" _nghost-hup-c11="" ng-reflect-status="danger" class="status-danger" *ngIf="submitted && (f.name_de.errors || f.information_de.errors || f.name_en.errors || f.information_en.errors || f.name_fr.errors|| f.information_fr.errors|| f.google_map_link.errors)">
+            
+              <strong _ngcontent-hup-c9="">Oh snap!</strong> Required fields are missing. Please scroll above to see more Information. 
+          
+            </nb-alert>
+                    
+            
+            <div class="row">
+              <div class="col-md-12">
+                <button fullWidth type="submit" nbButton>Submit</button>
+              </div>
+            </div>
+          </form>
+        </nb-card-body>
+      </nb-card> 
+    </div>
+  </div>

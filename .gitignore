@@ -1,0 +1,21 @@
+# .gitignored items for smartphone apps
+# Please try to use absolute paths to avoid conflicts
+
+/SmartphoneApps/Saarromanus/node_modules
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+/SmartphoneApps/Saarromanus/web-build
+/SmartphoneApps/Saarromanus/web-report
+.vscode
+
+# macOS
+.DS_Store
+
+
+# .gitignored items for backend
+# Please try to use absolute paths to avoid conflicts
